@@ -14,7 +14,7 @@ ADD https://github.com/ET-Team/EnigTech2/releases/download/v1.4.0/ET2.v1.4.0.Add
 
 RUN unzip server.zip
 RUN mv /EnigTech2-1.4.0-本体-Server /data && rm /data/*.jar && (cd /data/mods && unzip /dlc.zip)
-ADD https://media.forgecdn.net/files/2785/465/Forgelin-1.8.4.jar /data/mods/Foreglin-1.8.4.jar
+ADD https://media.forgecdn.net/files/2785/465/Forgelin-1.8.4.jar /data/mods/Forgelin-1.8.4.jar
 COPY --from=build_archon /source/build/libs/archon-1.0.jar /data/mods/archon.jar
 RUN sed -ri '/levelCap/ s/30/100/g' /data/config/astralsorcery.cfg && chown 1000:1000 -R /data
 
