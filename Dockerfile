@@ -11,6 +11,7 @@ RUN find /data/mods -type f  -exec chmod 644 {} \; && find /data/mods -type d -e
 
 # change config
 RUN sed -ri '/levelCap/ s/30/100/g' /data/config/astralsorcery.cfg
+RUN sed -ri '/SleeperPerc/ s/50/1/g;' /data/config/morpheus.cfg
 
 FROM itzg/minecraft-server:latest
 COPY --from=download --chown=minecraft /data/mods /data/mods
