@@ -21,6 +21,7 @@ COPY --from=download --chown=minecraft /data/patchouli_books /data/patchouli_boo
 COPY --from=download --chown=minecraft /data/resources /data/resources
 COPY --from=download --chown=minecraft /data/scripts /data/scripts
 COPY --from=download --chown=minecraft /data/config /data/config
+ADD ranks.txt /data/local/ftbutilities/ranks.txt
 
 ENV VERSION="1.12.2" \
 TYPE="FORGE" \
