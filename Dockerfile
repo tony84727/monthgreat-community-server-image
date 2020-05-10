@@ -1,3 +1,10 @@
+FROM alpine:3.7 AS build_archon
+
+RUN apk add openjdk8
+ADD Archon /source
+WORKDIR /source
+RUN ./gradlew build
+
 FROM alpine:3.7 AS download
 
 RUN apk add --no-cache unzip
@@ -7,6 +14,9 @@ ADD https://github.com/ET-Team/EnigTech2/releases/download/v1.4.0/ET2.v1.4.0.Add
 
 RUN unzip server.zip
 RUN mv /EnigTech2-1.4.0-本体-Server /data && rm /data/*.jar && (cd /data/mods && unzip /dlc.zip)
+ADD https://media.forgecdn.net/files/2947/231/TickCentral-2.6.jar /data/mods/TickCentral-2.6.jar
+ADD https://media.forgecdn.net/files/2947/622/LagGoggles-1.12.2-5.8-132.jar /data/mods/LagGoggles-1.12.2-5.8-132.jar
+COPY --from=build_archon /source/build/libs/archon-1.0.jar /data/mods/archon.jar
 RUN find /data/mods -type f  -exec chmod 644 {} \; && find /data/mods -type d -exec chmod 755 {} \;
 
 # change config
