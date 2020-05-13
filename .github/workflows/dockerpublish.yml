@@ -1,50 +1,40 @@
 name: Docker
 
-on:
-  push:
-    # Publish `master` as Docker `latest` image.
-    branches:
-      - master
-
-    # Publish `v1.2.3` tags as releases.
-    tags:
-      - v*
-
-  # Run tests for any PRs.
-  pull_request:
+on: [push, pull_request]
 
 env:
   # TODO: Change variable to your image's name.
   IMAGE_NAME: monthgreat-community-server
 
 jobs:
-  # Run tests.
-  # See also https://docs.docker.com/docker-hub/builds/automated-testing/
   test:
+    name: Test
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: true
-
-      - name: Run tests
-        run: |
-          if [ -f docker-compose.test.yml ]; then
-            docker-compose --file docker-compose.test.yml build
-            docker-compose --file docker-compose.test.yml run sut
-          else
-            docker build . --file Dockerfile
-          fi
-
+      - name: Build
+        run: docker build .
+  push-to-docker-hub:
+    name: Push to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Build
+        run: docker build . --file Dockerfile --tag tony84727/$IMAGE_NAME:ci-$GITHUB_RUN_ID
+      - name: Log into Docker Hub
+        run: echo "${{ secrets.DOCKER_ACCESS_TOKEN }}" | docker login --username tony84727 --password-stdin
+      - name: Push
+        run: docker push tony84727/$IMAGE_NAME:ci-$GITHUB_RUN_ID
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
-  push:
-    # Ensure test job passes before pushing image.
-    needs: test
-
+  push-to-github:
+    name: Push to Github Packages
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && github.ref == 'master'
 
     steps:
       - uses: actions/checkout@v2
