@@ -3,7 +3,6 @@ name: Docker
 on: [push, pull_request]
 
 env:
-  # TODO: Change variable to your image's name.
   IMAGE_NAME: monthgreat-community-server
 
 jobs:
@@ -34,7 +33,7 @@ jobs:
   push-to-github:
     name: Push to Github Packages
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'master'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
 
     steps:
       - uses: actions/checkout@v2
