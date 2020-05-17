@@ -30,7 +30,7 @@ jobs:
         run: docker push tony84727/$IMAGE_NAME:ci-$GITHUB_RUN_NUMBER
       - name: Push Latest
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        run: docker push tony84727$IMAGE_NAME:latest
+        run: docker push tony84727/$IMAGE_NAME:latest
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
   push-to-github:
