@@ -16,4 +16,5 @@ DIFFICULTY=3 \
 LEVEL_TYPE=DEFAULT \
 ALLOW_FLIGHT=TRUE \
 MAX_TICK_TIME=180000 \
-JVM_XX_OPTS="-XX:+UnlockExperimentalVMOptions -XX:+UseZGC"
+JVM_DD_OPTS="fml.readTimeout:180 sun.rmi.dgc.server.gcInterval:2147483646" \
+JVM_XX_OPTS="-XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=40 -XX:G1HeapRegionSize=32M -XX:G1MixedGCLiveThresholdPercent=50"
