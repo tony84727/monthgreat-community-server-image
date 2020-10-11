@@ -2,7 +2,7 @@ FROM alpine:3.7 AS download
 
 RUN apk add --no-cache unzip
 
-ADD https://media.forgecdn.net/files/3069/212/CrafttoExile-Dissonance-2.4.7-SERVER.zip server.zip
+ADD https://media.forgecdn.net/files/3074/891/CrafttoExile-Dissonance-2.5.2b-SERVER.zip server.zip
 
 RUN mkdir files && cd files && unzip /server.zip
 
