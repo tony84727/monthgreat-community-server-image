@@ -19,6 +19,7 @@ ADD https://media.forgecdn.net/files/3245/792/spark-forge.jar mods/spark-forge.j
 ADD https://github.com/tony84727/xp-tweak/releases/download/1.0/xptweak-1.0-7.jar mods/xptweak-1.0-7.jar
 ADD server.properties server.properties
 VOLUME [ "/var/server/world" ]
+VOLUME [ "/var/server/backups" ]
 ENV JVM_OPTS="-XX:+AggressiveOpts \
 -XX:ParallelGCThreads=4 \
 -XX:+UseConcMarkSweepGC \
