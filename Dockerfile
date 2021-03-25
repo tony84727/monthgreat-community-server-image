@@ -7,6 +7,7 @@ RUN unzip server.zip
 WORKDIR /tmp/SIMPLE-SERVER-FILES-1.5.6
 ADD https://github.com/BloodyMods/ServerStarter/releases/download/v1.2.7/serverstarter-1.2.7.jar serverstarter-1.2.7.jar
 RUN chmod +x "./startserver.sh"
+RUN ./startserver.sh install
 
 FROM alpine:3.12.4
 RUN apk add --update --no-cache openjdk8 emacs zip unzip bash
