@@ -19,4 +19,20 @@ ADD https://media.forgecdn.net/files/3245/792/spark-forge.jar mods/spark-forge.j
 ADD https://github.com/tony84727/xp-tweak/releases/download/1.0/xptweak-1.0-7.jar mods/xptweak-1.0-7.jar
 ADD server.properties server.properties
 VOLUME [ "/var/server/world" ]
-CMD [ "./startserver.sh"]
+ENV JVM_OPTS="-XX:+AggressiveOpts \
+-XX:ParallelGCThreads=4 \
+-XX:+UseConcMarkSweepGC \
+-XX:+UnlockExperimentalVMOptions \
+-XX:+UseParNewGC \
+-XX:+ExplicitGCInvokesConcurrent \
+-XX:MaxGCPauseMillis=10 \
+-XX:GCPauseIntervalMillis=50 \
+-XX:+UseFastAccessorMethods \
+-XX:+OptimizeStringConcat \
+-XX:NewSize=84m \
+-XX:+UseAdaptiveGCBoundary \
+-XX:NewRatio=3 \
+-Dfml.readTimeout=300 \
+-Dfml.queryResult=confirm"
+ENV MEMORY="12G"
+CMD java ${JVM_OPTS} -Xmx${MEMORY} -jar forge-1.16.5-36.1.2.jar
