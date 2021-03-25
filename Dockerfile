@@ -5,6 +5,7 @@ WORKDIR /tmp
 ADD https://media.forgecdn.net/files/3249/362/SIMPLE-SERVER-FILES-1.5.6.zip server.zip
 RUN unzip server.zip
 WORKDIR /tmp/SIMPLE-SERVER-FILES-1.5.6
+ADD https://github.com/BloodyMods/ServerStarter/releases/download/v1.2.7/serverstarter-1.2.7.jar serverstarter-1.2.7.jar
 RUN chmod +x "./startserver.sh"
 
 FROM alpine:3.12.4
