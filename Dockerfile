@@ -24,12 +24,13 @@ COPY --from=download /tmp/SIMPLE-SERVER-FILES-1.5.6 /var/server
 WORKDIR /var/server
 ADD quark-common.toml config/quark-common.toml
 ADD https://media.forgecdn.net/files/3245/792/spark-forge.jar mods/spark-forge.jar
-ADD https://github.com/tony84727/xp-tweak/releases/download/1.0/xptweak-1.0-7.jar mods/xptweak-1.0-7.jar
+ADD https://github.com/tony84727/xp-tweak/releases/download/v1.1.0/xptweak-1.1.0-13.jar mods/xptweak-1.1.0-13.jar
 ADD https://github.com/tony84727/Apotheosis/releases/download/v4.4.1-p2/Apotheosis-1.16.3-4.4.1.jar mods/Apotheosis-1.16.3-4.4.1.jar
 ADD server.properties server.properties
 VOLUME [ "/var/server/world" ]
 VOLUME [ "/var/server/backups" ]
 ENV JVM_OPTS="-XX:+AggressiveOpts \
+-server \
 -XX:ParallelGCThreads=4 \
 -XX:+UseConcMarkSweepGC \
 -XX:+UnlockExperimentalVMOptions \
