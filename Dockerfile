@@ -9,7 +9,7 @@ FROM alpine:3.12.4 AS download
 
 RUN apk add --update openjdk11 unzip bash libgcc
 WORKDIR /tmp
-ADD https://media.forgecdn.net/files/3270/985/All+the+Mods+6-1.5.10.zip server.zip
+ADD https://media.forgecdn.net/files/3270/989/SIMPLE-SERVER-FILES-1.5.10.zip server.zip
 RUN unzip server.zip
 WORKDIR /tmp/SIMPLE-SERVER-FILES-1.5.10
 RUN echo "eula=true" > eula.txt
