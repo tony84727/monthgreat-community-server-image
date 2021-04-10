@@ -13,14 +13,14 @@ ADD https://media.forgecdn.net/files/3270/989/SIMPLE-SERVER-FILES-1.5.10.zip ser
 RUN unzip server.zip
 WORKDIR /tmp/SIMPLE-SERVER-FILES-1.5.10
 RUN echo "eula=true" > eula.txt
-COPY --from=compile-installer /minecraft-mod-installer-main/target/release/minecraft-mod-installer minecraft-mod-installer
+COPY --from=compile-installer /minecraft-mod-installer-0.1.1/target/release/minecraft-mod-installer minecraft-mod-installer
 RUN chmod +x ./minecraft-mod-installer && ./minecraft-mod-installer
 ADD https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.16.5-36.1.2/forge-1.16.5-36.1.2-installer.jar forge-installer.jar
 RUN java -jar forge-installer.jar --installServer
 
 FROM alpine:3.12.4
 RUN apk add --update --no-cache openjdk11 emacs zip unzip bash
-COPY --from=download /tmp/SIMPLE-SERVER-FILES-1.5.6 /var/server
+COPY --from=download /tmp/SIMPLE-SERVER-FILES-1.5.10 /var/server
 WORKDIR /var/server
 ADD quark-common.toml config/quark-common.toml
 ADD https://github.com/tony84727/xp-tweak/releases/download/v1.1.0/xptweak-1.1.0-13.jar mods/xptweak-1.1.0-13.jar
