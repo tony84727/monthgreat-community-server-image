@@ -3,7 +3,7 @@ ADD https://github.com/tony84727/minecraft-mod-installer/archive/refs/tags/v0.1.
 RUN apk add --update unzip cargo openssl-dev
 RUN unzip installer.zip
 WORKDIR /minecraft-mod-installer-0.1.1
-RUN cargo build --release
+RUN --mount=type=cache,target=/root/.cargo/registry --mount=type=cache,target=/root/.cargo/git --mount=type=cache,target=target cargo build --release
 
 FROM alpine:3.12.4 AS download
 
