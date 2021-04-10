@@ -1,8 +1,8 @@
 FROM alpine:3.12.4 AS compile-installer
-ADD https://github.com/tony84727/minecraft-mod-installer/archive/refs/heads/main.zip installer.zip
+ADD https://github.com/tony84727/minecraft-mod-installer/archive/refs/tags/v0.1.1.zip installer.zip
 RUN apk add --update unzip cargo openssl-dev
 RUN unzip installer.zip
-WORKDIR /minecraft-mod-installer-main
+WORKDIR /minecraft-mod-installer-0.1.1
 RUN cargo build --release
 
 FROM alpine:3.12.4 AS download
