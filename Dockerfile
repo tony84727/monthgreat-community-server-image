@@ -19,7 +19,7 @@ ADD https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.16.5-36.1.
 RUN java -jar forge-installer.jar --installServer
 
 FROM alpine:3.12.4
-RUN apk add --update --no-cache openjdk8 emacs zip unzip bash
+RUN apk add --update --no-cache openjdk11 emacs zip unzip bash
 COPY --from=download /tmp/SIMPLE-SERVER-FILES-1.5.6 /var/server
 WORKDIR /var/server
 ADD quark-common.toml config/quark-common.toml
