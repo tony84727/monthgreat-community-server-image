@@ -12,69 +12,29 @@ env:
   IMAGE_NAME: monthgreat-community-server
 
 jobs:
-  test:
-    name: Test
+  build-push-to-docker-hub:
+    name: Build & Push to Docker Hub
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: crazy-max/ghaction-docker-meta@v2
+        id: meta
         with:
-          submodules: true
-      - name: Build
-        run: docker build .
-  push-to-docker-hub:
-    name: Push to Docker Hub
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: true
-      - name: Build
-        run: docker build . --file Dockerfile --tag tony84727/$IMAGE_NAME:ci-$GITHUB_RUN_NUMBER
+          images: |
+            tony84727/monthgreat-community-server
+          tags: |
+            type=raw,value=${{ github.run_number }}
+            type=raw,value=latest,enable=${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+            type=edge,branch=master
       - name: Log into Docker Hub
-        run: echo "${{ secrets.DOCKER_ACCESS_TOKEN }}" | docker login --username tony84727 --password-stdin
-      - name: Push
-        run: docker push tony84727/$IMAGE_NAME:ci-$GITHUB_RUN_NUMBER
-      - name: Push Latest
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        run: |
-          docker tag tony84727/$IMAGE_NAME:ci-$GITHUB_RUN_NUMBER tony84727/$IMAGE_NAME:latest && \
-          docker push tony84727/$IMAGE_NAME:latest
-  # Push image to GitHub Packages.
-  # See also https://docs.docker.com/docker-hub/builds/
-  push-to-github:
-    name: Push to Github Packages
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-
-    steps:
-      - uses: actions/checkout@v2
+        uses: docker/login-action@v1
         with:
-          submodules: true
-
-      - name: Build image
-        run: docker build . --file Dockerfile --tag $IMAGE_NAME
-
-      - name: Log into registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-
-      - name: Push image
-        run: |
-          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
-          
-          # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-
-          # Strip "v" prefix from tag name
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "master" ] && VERSION=latest
-
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
-
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
+          username: tony84727
+          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+      - name: Build and Push
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
