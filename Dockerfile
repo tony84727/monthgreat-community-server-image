@@ -7,7 +7,7 @@ RUN cargo build --release
 
 FROM alpine:3.12.4 AS download
 
-RUN apk add --update openjdk11 unzip bash
+RUN apk add --update openjdk11 unzip bash libgcc
 WORKDIR /tmp
 ADD https://media.forgecdn.net/files/3270/985/All+the+Mods+6-1.5.10.zip server.zip
 RUN unzip server.zip
