@@ -27,7 +27,7 @@ ADD https://github.com/tony84727/xp-tweak/releases/download/v1.1.0/xptweak-1.1.0
 ADD server.properties server.properties
 VOLUME [ "/var/server/world" ]
 VOLUME [ "/var/server/backups" ]
-ENV JVM_OPTS = "-server \
+ENV JVM_OPTS="-server \
 -XX:+UseG1GC \
 -XX:+ParallelRefProcEnabled \
 -XX:MaxGCPauseMillis=200 \
