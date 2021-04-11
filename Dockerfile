@@ -9,9 +9,10 @@ FROM alpine:3.12.4 AS download
 
 RUN apk add --update openjdk11 unzip bash libgcc
 WORKDIR /tmp
-ADD https://media.forgecdn.net/files/3270/989/SIMPLE-SERVER-FILES-1.5.10.zip server.zip
+ARG atmVersion="1.5.10b"
+ADD https://media.forgecdn.net/files/3270/989/SIMPLE-SERVER-FILES-${atmVersion}.zip server.zip
 RUN unzip server.zip
-WORKDIR /tmp/SIMPLE-SERVER-FILES-1.5.10
+WORKDIR /tmp/SIMPLE-SERVER-FILES-${atmVersion}
 RUN echo "eula=true" > eula.txt
 COPY --from=compile-installer /tmp/minecraft-mod-installer minecraft-mod-installer
 RUN chmod +x ./minecraft-mod-installer && ./minecraft-mod-installer
@@ -20,7 +21,7 @@ RUN java -jar forge-installer.jar --installServer
 
 FROM alpine:3.12.4
 RUN apk add --update --no-cache openjdk11 emacs zip unzip bash
-COPY --from=download /tmp/SIMPLE-SERVER-FILES-1.5.10 /var/server
+COPY --from=download /tmp/SIMPLE-SERVER-FILES-${atmVersion} /var/server
 WORKDIR /var/server
 ADD quark-common.toml config/quark-common.toml
 ADD https://github.com/tony84727/xp-tweak/releases/download/v1.1.0/xptweak-1.1.0-13.jar mods/xptweak-1.1.0-13.jar
