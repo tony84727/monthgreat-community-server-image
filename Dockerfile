@@ -3,7 +3,7 @@ ADD https://github.com/tony84727/minecraft-mod-installer/archive/refs/tags/v0.1.
 RUN apk add --update unzip cargo openssl-dev
 RUN unzip installer.zip
 WORKDIR /minecraft-mod-installer-0.1.1
-RUN --mount=type=cache,target=/root/.cargo/registry --mount=type=cache,target=/root/.cargo/git --mount=type=cache,target=target cargo build --release
+RUN --mount=type=cache,target=/root/.cargo/registry --mount=type=cache,target=/root/.cargo/git --mount=type=cache,target=target cargo build --release && cp target/release/minecraft-mod-installer /tmp/minecraft-mod-installer
 
 FROM alpine:3.12.4 AS download
 
@@ -13,7 +13,7 @@ ADD https://media.forgecdn.net/files/3270/989/SIMPLE-SERVER-FILES-1.5.10.zip ser
 RUN unzip server.zip
 WORKDIR /tmp/SIMPLE-SERVER-FILES-1.5.10
 RUN echo "eula=true" > eula.txt
-COPY --from=compile-installer /minecraft-mod-installer-0.1.1/target/release/minecraft-mod-installer minecraft-mod-installer
+COPY --from=compile-installer /tmp/minecraft-mod-installer minecraft-mod-installer
 RUN chmod +x ./minecraft-mod-installer && ./minecraft-mod-installer
 ADD https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.16.5-36.1.2/forge-1.16.5-36.1.2-installer.jar forge-installer.jar
 RUN java -jar forge-installer.jar --installServer
