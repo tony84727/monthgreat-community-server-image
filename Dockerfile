@@ -10,7 +10,8 @@ FROM alpine:3.12.4 AS download
 RUN apk add --update openjdk11 unzip bash libgcc
 WORKDIR /tmp
 ARG atmVersion="1.5.10b"
-ADD https://media.forgecdn.net/files/3270/989/SIMPLE-SERVER-FILES-${atmVersion}.zip server.zip
+ARG atmDownloadLink="https://media.forgecdn.net/files/3271/952/SIMPLE-SERVER-FILES-1.5.10b.zip"
+ADD ${atmDownloadLink} server.zip
 RUN unzip server.zip
 WORKDIR /tmp/SIMPLE-SERVER-FILES-${atmVersion}
 RUN echo "eula=true" > eula.txt
