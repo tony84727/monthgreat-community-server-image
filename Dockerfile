@@ -9,8 +9,8 @@ FROM alpine:3.12.4 AS download
 
 RUN apk add --update openjdk11 unzip bash libgcc
 WORKDIR /tmp
-ARG atmVersion="1.5.10b"
-ARG atmDownloadLink="https://media.forgecdn.net/files/3271/952/SIMPLE-SERVER-FILES-1.5.10b.zip"
+ARG atmVersion="1.6.0b"
+ARG atmDownloadLink="https://media.forgecdn.net/files/3278/552/SIMPLE-SERVER-FILES-1.6.0b.zip"
 ADD ${atmDownloadLink} server.zip
 RUN unzip server.zip && mv /tmp/SIMPLE-SERVER-FILES-${atmVersion} /tmp/server-files
 WORKDIR /tmp/server-files
