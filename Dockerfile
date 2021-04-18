@@ -25,7 +25,7 @@ RUN apk add --update --no-cache openjdk11 emacs zip unzip bash
 COPY --from=download /tmp/server-files /var/server
 WORKDIR /var/server
 ADD quark-common.toml config/quark-common.toml
-ADD https://github.com/tony84727/xp-tweak/releases/download/v1.1.0/xptweak-1.1.0-13.jar mods/xptweak-1.1.0-13.jar
+ADD https://github.com/tony84727/xp-tweak/releases/download/v1.2.0/xptweak-1.2.0-26.jar mods/xptweak-1.2.0-26.jar
 ADD server.properties server.properties
 VOLUME [ "/var/server/world" ]
 VOLUME [ "/var/server/backups" ]
