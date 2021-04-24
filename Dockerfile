@@ -32,6 +32,8 @@ VOLUME [ "/var/server/backups" ]
 ENV JVM_OPTS="-server \
 -XX:+UnlockExperimentalVMOptions \
 -XX:+UseZGC \
+-XX:SurvivorRatio=32 \
+-XX:MaxGCPauseMillis=50 \
 -Dfml.readTimeout=90 \
 -Dfml.queryResult=confirm"
 ENV MEMORY="12G"
