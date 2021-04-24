@@ -29,6 +29,8 @@ ADD https://github.com/tony84727/xp-tweak/releases/download/v1.2.0/xptweak-1.2.0
 ADD server.properties server.properties
 VOLUME [ "/var/server/world" ]
 VOLUME [ "/var/server/backups" ]
+ADD entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 ENV JVM_OPTS="-server \
 -XX:+UseG1GC \
 -XX:+ParallelRefProcEnabled \
@@ -53,4 +55,4 @@ ENV JVM_OPTS="-server \
 -Dfml.readTimeout=90 \
 -Dfml.queryResult=confirm"
 ENV MEMORY="12G"
-CMD java ${JVM_OPTS} -Xmx${MEMORY} -jar forge-1.16.5-36.1.2.jar nogui
+CMD ["/entrypoint.sh"]
