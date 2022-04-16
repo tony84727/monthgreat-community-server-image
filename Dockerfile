@@ -20,7 +20,7 @@ RUN chmod +x ./minecraft-mod-installer && ./minecraft-mod-installer
 ADD https://maven.minecraftforge.net/net/minecraftforge/forge/1.18.2-40.0.52/forge-1.18.2-40.0.52-installer.jar forge-installer.jar
 RUN java -jar forge-installer.jar --installServer
 
-FROM openjdk:17-jdk
+FROM openjdk:18-jdk
 # RUN apt install --update --no-cache emacs zip unzip bash libstdc++
 COPY --from=download /tmp/server-files /var/server
 WORKDIR /var/server
