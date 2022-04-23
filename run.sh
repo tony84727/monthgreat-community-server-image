@@ -3,4 +3,4 @@
 # Add custom JVM arguments to the user_jvm_args.txt
 # Add custom program arguments {such as nogui} to this file in the next line before the "$@" or
 #  pass them to this script directly
-java -Xmx$MEMORY $JVM_OPTS @user_jvm_args.txt @libraries/net/minecraftforge/forge/1.18.2-40.0.52/unix_args.txt "$@"
+java -Xmx$MEMORY $JVM_OPTS @user_jvm_args.txt @libraries/net/minecraftforge/forge/1.18.2-40.1.0/unix_args.txt "$@"
