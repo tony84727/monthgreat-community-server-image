@@ -9,15 +9,15 @@ FROM alpine:3.13.5 AS download
 
 RUN apk add --update openjdk11 unzip bash libgcc
 WORKDIR /tmp
-ARG atmVersion="0.3.20"
-ARG atmDownloadLink="https://media.forgecdn.net/files/3779/305/SIMPLE-SERVER-FILES-0.3.20.zip"
+ARG atmVersion="0.3.21"
+ARG atmDownloadLink="https://media.forgecdn.net/files/3782/491/SIMPLE-SERVER-FILES-0.3.21.zip"
 ADD ${atmDownloadLink} server.zip
 RUN unzip server.zip && mv /tmp/SIMPLE-SERVER-FILES-${atmVersion} /tmp/server-files
 WORKDIR /tmp/server-files
 RUN echo "eula=true" > eula.txt
 COPY --from=compile-installer /tmp/minecraft-mod-installer minecraft-mod-installer
 RUN chmod +x ./minecraft-mod-installer && ./minecraft-mod-installer
-ADD https://maven.minecraftforge.net/net/minecraftforge/forge/1.18.2-40.1.0/forge-1.18.2-40.1.0-installer.jar forge-installer.jar
+ADD https://maven.minecraftforge.net/net/minecraftforge/forge/1.18.2-40.1.16/forge-1.18.2-40.1.16-installer.jar forge-installer.jar
 RUN java -jar forge-installer.jar --installServer
 
 FROM openjdk:18-jdk
