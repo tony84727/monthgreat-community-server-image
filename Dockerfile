@@ -9,15 +9,15 @@ FROM alpine:3.13.5 AS download
 
 RUN apk add --update openjdk11 unzip bash libgcc
 WORKDIR /tmp
-ARG atmVersion="0.3.21"
-ARG atmDownloadLink="https://media.forgecdn.net/files/3782/491/SIMPLE-SERVER-FILES-0.3.21.zip"
+ARG atmVersion="0.4.0"
+ARG atmDownloadLink="https://media.forgecdn.net/files/3793/375/SIMPLE-SERVER-FILES-0.4.0.zip"
 ADD ${atmDownloadLink} server.zip
 RUN unzip server.zip && mv /tmp/SIMPLE-SERVER-FILES-${atmVersion} /tmp/server-files
 WORKDIR /tmp/server-files
 RUN echo "eula=true" > eula.txt
 COPY --from=compile-installer /tmp/minecraft-mod-installer minecraft-mod-installer
 RUN chmod +x ./minecraft-mod-installer && ./minecraft-mod-installer
-ADD https://maven.minecraftforge.net/net/minecraftforge/forge/1.18.2-40.1.16/forge-1.18.2-40.1.16-installer.jar forge-installer.jar
+ADD https://maven.minecraftforge.net/net/minecraftforge/forge/1.18.2-40.1.20/forge-1.18.2-40.1.20-installer.jar forge-installer.jar
 RUN java -jar forge-installer.jar --installServer
 
 FROM openjdk:18-jdk
@@ -49,6 +49,5 @@ ENV JVM_OPTS="-server \
 	-Dfml.readTimeout=90 \
 	-Dfml.queryResult=confirm"
 ENV MEMORY="12G"
-ADD run.sh .
-RUN chmod +x run.sh
-CMD ./run.sh
+RUN sed -i 's/^java/java -Xmx\$MEMORY/' ./run.sh
+CMD ["./run.sh"]
