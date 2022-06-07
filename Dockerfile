@@ -9,45 +9,20 @@ FROM alpine:3.13.5 AS download
 
 RUN apk add --update openjdk11 unzip bash libgcc
 WORKDIR /tmp
-ARG atmVersion="0.4.0"
-ARG atmDownloadLink="https://media.forgecdn.net/files/3793/375/SIMPLE-SERVER-FILES-0.4.0.zip"
+ARG atmDownloadLink="https://media.forgecdn.net/files/3817/837/Server-Files-0.4.9.zip"
+ARG atmVersion="0.4.9"
 ADD ${atmDownloadLink} server.zip
-RUN unzip server.zip && mv /tmp/SIMPLE-SERVER-FILES-${atmVersion} /tmp/server-files
+RUN unzip server.zip && mv /tmp/Server-Files-${atmVersion} /tmp/server-files
 WORKDIR /tmp/server-files
 RUN echo "eula=true" > eula.txt
-COPY --from=compile-installer /tmp/minecraft-mod-installer minecraft-mod-installer
-RUN chmod +x ./minecraft-mod-installer && ./minecraft-mod-installer
-ADD https://maven.minecraftforge.net/net/minecraftforge/forge/1.18.2-40.1.20/forge-1.18.2-40.1.20-installer.jar forge-installer.jar
-RUN java -jar forge-installer.jar --installServer
+RUN java -jar forge-1.18.2-40.1.31-installer.jar --installServer
 
 FROM openjdk:18-jdk
-# RUN apt install --update --no-cache emacs zip unzip bash libstdc++
 COPY --from=download /tmp/server-files /var/server
 WORKDIR /var/server
 ADD server.properties server.properties
 VOLUME [ "/var/server/world" ]
 VOLUME [ "/var/server/backups" ]
-ENV JVM_OPTS="-server \
-	-XX:+UseG1GC \
-	-XX:+ParallelRefProcEnabled \
-	-XX:MaxGCPauseMillis=200 \
-	-XX:+UnlockExperimentalVMOptions \
-	-XX:+DisableExplicitGC \
-	-XX:+AlwaysPreTouch \
-	-XX:G1NewSizePercent=30 \
-	-XX:G1MaxNewSizePercent=40 \
-	-XX:G1HeapRegionSize=8M \
-	-XX:G1ReservePercent=20 \
-	-XX:G1HeapWastePercent=5 \
-	-XX:G1MixedGCCountTarget=4 \
-	-XX:InitiatingHeapOccupancyPercent=15 \
-	-XX:G1MixedGCLiveThresholdPercent=90 \
-	-XX:G1RSetUpdatingPauseTimePercent=5 \
-	-XX:SurvivorRatio=32 \
-	-XX:+PerfDisableSharedMem \
-	-XX:MaxTenuringThreshold=1 \
-	-Dfml.readTimeout=90 \
-	-Dfml.queryResult=confirm"
 ENV MEMORY="12G"
 RUN sed -i 's/^java/java -Xmx\$MEMORY/' ./run.sh
 CMD ["./run.sh"]
